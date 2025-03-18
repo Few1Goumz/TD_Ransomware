@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 import logging
 from urllib.parse import urlparse
-import cgi
+import mimetypes
 import json
 import traceback
 
@@ -39,7 +39,7 @@ class CNCBase(BaseHTTPRequestHandler):
 
     def do_POST(self):
         content_type = self.headers.get('content-type')
-        ctype, _ = cgi.parse_header(content_type)
+        ctype, _ = mimetypes.guess_type(content_type)
         if ctype == 'application/json':
             length = int(self.headers.get('content-length'))
             body = json.loads(self.rfile.read(length))
